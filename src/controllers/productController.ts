@@ -11,7 +11,14 @@ export const getAllProducts = async (req: Request, res: Response) => {
       ORDER BY p.name
     `);
 
-    res.json({ products: result.rows });
+    // Convert price strings to numbers
+    const products = result.rows.map((product) => ({
+      ...product,
+      price: parseFloat(product.price),
+      cost_price: parseFloat(product.cost_price),
+    }));
+
+    res.json({ products });
   } catch (error) {
     console.error("Get products error:", error);
     res.status(500).json({ error: "Internal server error" });
@@ -34,7 +41,13 @@ export const getProductByBarcode = async (req: Request, res: Response) => {
       return res.status(404).json({ error: "Product not found" });
     }
 
-    res.json({ product: result.rows[0] });
+    const product = {
+      ...result.rows[0],
+      price: parseFloat(result.rows[0].price),
+      cost_price: parseFloat(result.rows[0].cost_price),
+    };
+
+    res.json({ product });
   } catch (error) {
     console.error("Get product error:", error);
     res.status(500).json({ error: "Internal server error" });
@@ -56,7 +69,14 @@ export const searchProducts = async (req: Request, res: Response) => {
       [`%${query}%`]
     );
 
-    res.json({ products: result.rows });
+    // Convert price strings to numbers
+    const products = result.rows.map((product) => ({
+      ...product,
+      price: parseFloat(product.price),
+      cost_price: parseFloat(product.cost_price),
+    }));
+
+    res.json({ products });
   } catch (error) {
     console.error("Search products error:", error);
     res.status(500).json({ error: "Internal server error" });
@@ -95,7 +115,13 @@ export const createProduct = async (req: Request, res: Response) => {
       ]
     );
 
-    res.status(201).json({ product: result.rows[0] });
+    const product = {
+      ...result.rows[0],
+      price: parseFloat(result.rows[0].price),
+      cost_price: parseFloat(result.rows[0].cost_price),
+    };
+
+    res.status(201).json({ product });
   } catch (error) {
     console.error("Create product error:", error);
     res.status(500).json({ error: "Internal server error" });
@@ -123,7 +149,13 @@ export const updateProduct = async (req: Request, res: Response) => {
       return res.status(404).json({ error: "Product not found" });
     }
 
-    res.json({ product: result.rows[0] });
+    const product = {
+      ...result.rows[0],
+      price: parseFloat(result.rows[0].price),
+      cost_price: parseFloat(result.rows[0].cost_price),
+    };
+
+    res.json({ product });
   } catch (error) {
     console.error("Update product error:", error);
     res.status(500).json({ error: "Internal server error" });
