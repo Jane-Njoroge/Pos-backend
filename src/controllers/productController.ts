@@ -139,6 +139,7 @@ export const updateProduct = async (req: Request, res: Response) => {
            price = COALESCE($2, price),
            stock_quantity = COALESCE($3, stock_quantity),
            is_active = COALESCE($4, is_active),
+           image_url = COALESCE(image_url, image_url),
            updated_at = CURRENT_TIMESTAMP
        WHERE id = $5
        RETURNING *`,
